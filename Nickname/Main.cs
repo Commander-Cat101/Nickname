@@ -16,6 +16,8 @@ namespace Nickname
         public override string Author => "Commander__Cat";
         public override string Name => "Nicknames";
 
+        public override Version Version => new Version("v1.0.0");
+
         public static Dictionary<string, string> Nicknames = new Dictionary<string, string>();
 
         public override void OnEnabled()
