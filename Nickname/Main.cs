@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Exiled.CreditTags;
+using Exiled.Events.EventArgs.Player;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,13 @@ namespace Nickname
         public override void OnEnabled()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnMatchStart;
+            Exiled.Events.Handlers.Server.RoundStarted += OnMatchStart;
+            Exiled.Events.Handlers.Player.Left += PlayerLeave;
         }
         public override void OnDisabled()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnMatchStart;
+            Exiled.Events.Handlers.Server.RoundStarted -= OnMatchStart;
             Nicknames = null;
         }
         public void OnMatchStart()
@@ -38,6 +42,10 @@ namespace Nickname
                     player.CustomName = kvp.Value;
                 }
             }
+        }
+        public void PlayerLeave(LeftEventArgs ev)
+        {
+            Nicknames.Remove(ev.Player.UserId);
         }
     }
 }
